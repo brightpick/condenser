@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "condenser"
+version = "0.1.0"
+description = "Config-driven database subsetting tool for Postgres and MySQL."
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.8"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Tonic AI" }]
+keywords = ["database", "subset", "subsetting", "postgres", "mysql", "sampling", "ETL"]
+classifiers = [
+
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Operating System :: OS Independent",
+  "Environment :: Console",
+  "Topic :: Database"
+]
+dependencies = [
+  "toposort",
+  "psycopg2-binary",
+  "mysql-connector-python"
+]
+
+[tool.setuptools.packages.find]
+include = ["*"]
+
+
+[[tool.uv.index]]
+name = "nexus-repository-u24"
+url = "https://nexus.ra.brightpick.ai/repository/bp_devops_u24/"
+publish-url = "https://nexus.ra.brightpick.ai/repository/bp_devops_u24/"
