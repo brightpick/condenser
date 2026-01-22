@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+version = "0.2.1"
+name = "bp-condenser-postgresql"
+description = "Config-driven Postgres database subsetting tool."
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.8"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Brightpick" }]
+keywords = ["database", "subset", "subsetting", "postgres", "sampling", "ETL"]
+classifiers = [
+
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Operating System :: OS Independent",
+  "Environment :: Console",
+  "Topic :: Database"
+]
+dependencies = [
+  "toposort",
+  "psycopg2-binary",
+  "mysql-connector-python"
+]
+
+[tool.setuptools.packages.find]
+include = ["*"]
