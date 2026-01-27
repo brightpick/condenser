@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "condenser"
-version = "0.1.0"
+version = "0.1.1"
 description = "Config-driven database subsetting tool for Postgres and MySQL."
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.8"
@@ -28,11 +28,27 @@ classifiers = [
 dependencies = [
   "toposort",
   "psycopg2-binary",
-  "mysql-connector-python"
+#  "mysql-connector-python"
 ]
 
-[tool.setuptools.packages.find]
-include = ["*"]
+[project.scripts]
+    condenser-direct-subset = "direct_subset:main"
+
+[tool.setuptools]
+py-modules = [
+  "config_reader",
+  "database_helper",
+  "db_connect",
+  "direct_subset",
+#  "mysql_database_creator",
+#  "mysql_database_helper",
+  "psql_database_creator",
+  "psql_database_helper",
+  "result_tabulator",
+  "subset",
+  "subset_utils",
+  "topo_orderer"
+]
 
 
 [[tool.uv.index]]
