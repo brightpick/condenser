@@ -30,8 +30,21 @@ classifiers = [
 dependencies = [
   "toposort",
   "psycopg2-binary",
-  "mysql-connector-python"
 ]
 
-[tool.setuptools.packages.find]
-include = ["*"]
+[project.scripts]
+    condenser-direct-subset = "direct_subset:main"
+
+[tool.setuptools]
+py-modules = [
+  "config_reader",
+  "database_helper",
+  "db_connect",
+  "direct_subset",
+  "psql_database_creator",
+  "psql_database_helper",
+  "result_tabulator",
+  "subset",
+  "subset_utils",
+  "topo_orderer"
+]

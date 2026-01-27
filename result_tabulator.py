@@ -1,6 +1,4 @@
-import config_reader
 import database_helper
-from db_connect import MySqlConnection
 
 
 def tabulate(source_dbc, destination_dbc, tables):
@@ -12,8 +10,7 @@ def tabulate(source_dbc, destination_dbc, tables):
     try:
         for table in tables:
             o = db_helper.get_table_count_estimate(table_name(table), schema_name(table), source_conn)
-            dest_schema_name = dest_conn.db_name if isinstance(dest_conn, MySqlConnection) else schema_name(table)
-            n = db_helper.get_table_count_estimate(table_name(table), dest_schema_name, dest_conn)
+            n = db_helper.get_table_count_estimate(table_name(table), schema_name(table), dest_conn)
             row_counts.append((table,o,n))
     finally:
         source_conn.close()
