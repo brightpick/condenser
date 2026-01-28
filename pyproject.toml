@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "condenser"
-version = "0.1.1"
+version = "0.1.2"
 description = "Config-driven database subsetting tool for Postgres and MySQL."
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.8"
@@ -55,3 +55,4 @@ py-modules = [
 name = "nexus-repository-u24"
 url = "https://nexus.ra.brightpick.ai/repository/bp_devops_u24/"
 publish-url = "https://nexus.ra.brightpick.ai/repository/bp_devops_u24/"
+explicit = true
