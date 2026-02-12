@@ -55,4 +55,5 @@ py-modules = [
 
 [tool.uv]
 publish-url = "https://nexus.ra.brightpick.ai/repository/bp_swdev/"
+check-url = "https://nexus.ra.brightpick.ai/repository/bp_swdev/simple"
 trusted-publishing = "never"
