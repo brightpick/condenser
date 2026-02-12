@@ -51,8 +51,6 @@ py-modules = [
 ]
 
 
-[[tool.uv.index]]
-name = "nexus-repository"
-url = "https://nexus.ra.brightpick.ai/repository/bp_swdev/"
+[tool.uv]
 publish-url = "https://nexus.ra.brightpick.ai/repository/bp_swdev/"
-explicit = true
+trusted-publishing = "never"
