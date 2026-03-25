@@ -1,5 +1,5 @@
 import config_reader
-import psycopg2, mysql.connector
+import psycopg2
 import os, pathlib, re, urllib, subprocess, os.path, json, getpass, time, sys, datetime
 
 class DbConnect:
@@ -30,8 +30,6 @@ class DbConnect:
 
         if self.__db_type == 'postgres':
             return PsqlConnection(self, read_repeatable)
-        elif self.__db_type == 'mysql':
-            return MySqlConnection(self, read_repeatable)
         else:
             raise ValueError('unknown db_type ' + self.__db_type)
 
@@ -87,16 +85,3 @@ class PsqlConnection(DbConnection):
         return LoggingCursor(self.connection.cursor(name=name, withhold=withhold))
 
 
-# small wrapper to the connection class that gives us a common interface to the cursor()
-# method across MySQL and Postgres. This one is for MySQL
-class MySqlConnection(DbConnection):
-    def __init__(self,  connect, read_repeatable):
-        DbConnection.__init__(self, mysql.connector.connect(host=connect.host, port=connect.port, user=connect.user, password=connect.password, database=connect.db_name))
-
-        self.db_name = connect.db_name
-
-        if read_repeatable:
-            self.connection.start_transaction(isolation_level='REPEATABLE READ')
-
-    def cursor(self, name=None, withhold=False):
-        return LoggingCursor(self.connection.cursor())
