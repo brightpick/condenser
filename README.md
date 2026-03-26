@@ -1,6 +1,6 @@
 # Condenser
 
-Condenser is a config-driven database subsetting tool for Postgres and MySQL.
+Condenser is a config-driven database subsetting tool for Postgres.
 
 Subsetting data is the process of taking a representative sample of your data in a manner that preserves the integrity of your database, e.g., give me 5% of my users. If you do this naively, e.g., just grab 5% of all the tables in your database, most likely, your database will break foreign key constraints. At best, you’ll end up with a statistically non-representative data sample.
 
@@ -14,15 +14,14 @@ Our open-source tool can subset databases up to 10GB, but it will struggle with 
 
 # Installation
 
-Five steps to install, assuming Python 3.5+:
+Five steps to install, assuming Python 3.8+:
 
-1. Download the required Python modules. You can use [`pip`](https://pypi.org/project/pip/) for easy installation. The required modules are `toposort`, `psycopg2-binary`, and `mysql-connector-python`.
+1. Download the required Python modules. You can use [`pip`](https://pypi.org/project/pip/) for easy installation. The required modules are `toposort` and `psycopg2-binary`.
 ```
 $ pip install toposort
 $ pip install psycopg2-binary
-$ pip install mysql-connector-python
 ```
-2. Install Postgres and/or MySQL database tools. For Postgres we need `pg_dump` and `psql` tools; they need to be on your `$PATH` or point to them with `$POSTGRES_PATH`. For MySQL we need `mysqldump` and `mysql`, they can be on your `$PATH` or point to them with `$MYSQL_PATH`.
+2. Install Postgres database tools. We need `pg_dump` and `psql`; they need to be on your `$PATH` or point to them with `$POSTGRES_PATH`.
 3. Download this repo. You can clone the repo or Download it as a zip. Scroll up, it's the green button that says "Clone or download".
 4. Setup your configuration and save it in `config.json`. The provided `config.json.example` has the skeleton of what you need to provide: source and destination database connection details, as well as subsetting goals in `initial_targets`. Here's an example that will collect 10% of a table named `public.target_table`.
 ```
@@ -39,7 +38,7 @@ There may be more required configuration depending on your database, but simple 
 
 # Config
 
-Configuration must exist in `config.json`. There is an example configuration provided in `example-config.json`. Most of the configuration is straightforward: source and destination DB connection details and subsetting settings. There are three fields that desire some additional attention.
+Configuration must exist in `config.json`. There is an example configuration provided in `config.json.example`. Most of the configuration is straightforward: source and destination DB connection details and subsetting settings. There are three fields that deserve some additional attention.
 
 The first is `initial_targets`. This is where you tell the subsetter to begin the subset. You can specify any number of tables as an initial target, and provide either a percent goal (e.g. 5% of the `users` table) or a WHERE clause.
 
@@ -47,19 +46,19 @@ Next is `dependency_breaks`. The best way to get a full understanding of this is
 
 The last is `fk_augmentation`. Databases frequently have foreign keys that are not codified as constraints on the database, these are implicit foreign keys. For a subsetter to create useful subsets if needs to know about this implicit constraints. This field lets you essentially add foreign keys to the subsetter that the DB doesn't have listed as a constraint.
 
-Below we describe the use of all configuration parameters, but the best place to start for the exact format is `example-config.json`.
+Below we describe the use of all configuration parameters, but the best place to start for the exact format is `config.json.example`.
 
-`db_type`: The type of the databse to subset. Valid values are `"postgres"` or `"mysql"`.
+`db_type`: Required database type selector. The only supported value is `"postgres"`.
 
-`source_db_connection_info`: Source database connection details. These are recorded as a JSON object with the fields `user_name`, `host`, `db_name`, `ssl_mode`, `password` (optional), and `post`. If `password` is omitted, then you will be prompted for a password. See `example-config.json` for details.
+`source_db_connection_info`: Source database connection details. These are recorded as a JSON object with the fields `user_name`, `host`, `db_name`, `ssl_mode`, `password` (optional), and `port`. If `password` is omitted, then you will be prompted for a password. See `config.json.example` for details.
 
 `destination_db_connection_info`: Destination database connection details. Same fields as `source_db_connection_info`.
 
-`initial_targets`: JSON array of JSON objects. The inner object must contain a `target` field, which is a target table, and either a `where` field or a `percent` field. The `where` field is used to specify a WHERE clause for the subsetting. The `percent` field indicates we want a specific percentage of the target table; it is equivalent to `"where": "random() < <percent>/100.0"`.
+`initial_targets`: JSON array of JSON objects. The inner object must contain a `table` field, which is a target table, and either a `where` field or a `percent` field. The `where` field is used to specify a WHERE clause for the subsetting. The `percent` field indicates we want a specific percentage of the target table; it is equivalent to `"where": "random() < <percent>/100.0"`.
 
-`passthrough_tables`: Tables that will be copied to destination database in whole. The value is a JSON array of strings, of the form `"<schema>.<table>"` for Postgres and `"<database>.<table>"` for MySQL.
+`passthrough_tables`: Tables that will be copied to the destination database in whole. The value is a JSON array of strings in the form `"<schema>.<table>"`.
 
-`excluded_tables`: Tables that will be excluded from the subset. The table will exist in the output, but contain no rows. The value is a JSON array of strings, of the form `"<schema>.<table>"` for Postgres and `"<database>.<table>"` for MySQL.
+`excluded_tables`: Tables that will be excluded from the subset. The table will exist in the output, but contain no rows. The value is a JSON array of strings in the form `"<schema>.<table>"`.
 
 `upstream_filters`: Additional filtering to be applied to tables during upstream subsetting. Upstream subsetting happens when a row is imported, and there are rows with foreign keys to that row. The subsetter then greedily grabs as many rows from the database as it can, based on the rows already imported. If you don't want such greedy behavior you can impose additional filters with this option. This is an advanced feature, you probably won't need for your first subsets. The value is a JSON array of JSON objects. See `example-config.json` for details.
 
@@ -83,12 +82,12 @@ Almost all the configuration is in the `config.json` file, so running is as simp
 $ python direct_subset.py
 ```
 
-Two commandline arguements are supported:
+Two commandline arguments are supported:
 
 `-v`: Verbose output. Useful for performance debugging. Lists almost every query made, and it's speed.
 
-`--no-constraints`: For Postgres this will not add constraints found in the source database to the destination database. This option has no effect for MySQL.
+`--no-constraints`: Do not add constraints found in the source database to the destination database.
 
 # Requirements
 
-Reference the requirements.txt file for a list of required python packages.  Also, please note that Python 3.5+ is required.
+Reference the `requirements.txt` file for a list of required Python packages. Python 3.8+ is required.

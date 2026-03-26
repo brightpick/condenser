@@ -3,7 +3,6 @@ import config_reader, result_tabulator
 import time
 from subset import Subset
 from psql_database_creator import PsqlDatabaseCreator
-# from mysql_database_creator import MySqlDatabaseCreator
 from db_connect import DbConnect
 from subset_utils import print_progress
 import database_helper
@@ -11,10 +10,8 @@ import database_helper
 def db_creator(db_type, source, dest):
     if db_type == 'postgres':
         return PsqlDatabaseCreator(source, dest, False)
-    elif db_type == 'mysql':
-        return MySqlDatabaseCreator(source, dest)
     else:
-        raise ValueError('unknown db_type ' + db_type)
+        raise ValueError('unsupported db_type ' + db_type)
 
 
 def main() -> None:

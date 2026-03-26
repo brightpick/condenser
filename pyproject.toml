@@ -5,13 +5,13 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "condenser"
 version = "0.1.4"
-description = "Config-driven database subsetting tool for Postgres and MySQL."
+description = "Config-driven Postgres database subsetting tool."
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.8"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [{ name = "Tonic AI" }]
-keywords = ["database", "subset", "subsetting", "postgres", "mysql", "sampling", "ETL"]
+keywords = ["database", "subset", "subsetting", "postgres", "sampling", "ETL"]
 classifiers = [
 
   "Programming Language :: Python :: 3",
@@ -30,7 +30,6 @@ classifiers = [
 dependencies = [
   "toposort",
   "psycopg2-binary",
-#  "mysql-connector-python"
 ]
 
 [project.scripts]
@@ -42,8 +41,6 @@ py-modules = [
   "database_helper",
   "db_connect",
   "direct_subset",
-#  "mysql_database_creator",
-#  "mysql_database_helper",
   "psql_database_creator",
   "psql_database_helper",
   "result_tabulator",

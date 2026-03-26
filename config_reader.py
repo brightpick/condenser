@@ -14,7 +14,23 @@ def initialize(file_like = None):
         _config = json.load(file_like)
 
     if "desired_result" in _config:
-        raise ValueError("desired_result is a key in the old config spec. Check the README.md and example-config.json for the latest configuration parameters.")
+        raise ValueError("desired_result is a key in the old config spec. Check the README.md and config.json.example for the latest configuration parameters.")
+
+    _validate_db_type()
+
+def _validate_db_type():
+    if 'db_type' not in _config:
+        raise ValueError("Missing required config key 'db_type'. The only supported value is 'postgres'.")
+
+    db_type = _config['db_type']
+    if not isinstance(db_type, str):
+        raise ValueError("Invalid db_type {!r}. The only supported value is 'postgres'.".format(db_type))
+
+    normalized_db_type = db_type.lower()
+    if normalized_db_type != 'postgres':
+        raise ValueError("Unsupported db_type '{}'. Condenser supports only 'postgres'.".format(db_type))
+
+    _config['db_type'] = normalized_db_type
 
 DependencyBreak = collections.namedtuple('DependencyBreak', ['fk_table', 'target_table'])
 def get_dependency_breaks():

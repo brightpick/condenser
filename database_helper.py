@@ -5,5 +5,4 @@ def get_specific_helper():
         import psql_database_helper
         return psql_database_helper
     else:
-        import mysql_database_helper
-        return mysql_database_helper
+        raise ValueError('unsupported db_type ' + config_reader.get_db_type())

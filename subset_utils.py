@@ -1,6 +1,5 @@
 import config_reader
 import database_helper
-from db_connect import MySqlConnection
 
 # this function generally copies all columns as is, but if the table has been selected as
 # breaking a dependency cycle, then it will insert NULLs instead of that table's foreign keys
@@ -89,8 +88,7 @@ def columns_joined(columns):
     return ','.join([quoter(c) for c in columns])
 
 def quoter(id):
-    q = '"' if config_reader.get_db_type() == 'postgres' else '`'
-    return q + id + q
+    return '"' + id + '"'
 
 def print_progress(target, idx, count):
     print('Processing {} of {}: {}'.format(idx, count, target))
@@ -171,9 +169,3 @@ class UnionFind:
                 retval.append(self.elements[idx])
 
         return retval
-
-def mysql_db_name_hack(target, conn):
-    if not isinstance(conn, MySqlConnection) or '.' not in  target:
-        return target
-    else:
-        return conn.db_name + '.' + table_name(target)

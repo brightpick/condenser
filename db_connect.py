@@ -31,7 +31,7 @@ class DbConnect:
         if self.__db_type == 'postgres':
             return PsqlConnection(self, read_repeatable)
         else:
-            raise ValueError('unknown db_type ' + self.__db_type)
+            raise ValueError('unsupported db_type ' + self.__db_type)
 
 class DbConnection:
     def __init__(self, connection):
@@ -69,7 +69,7 @@ class LoggingCursor:
         return LoggingCursor(self.inner_cursor.__enter__())
 
 # small wrapper to the connection class that gives us a common interface to the cursor()
-# method across MySQL and Postgres. This one is for Postgres
+# method. This one is for Postgres.
 class PsqlConnection(DbConnection):
     def __init__(self,  connect, read_repeatable):
         connection_string = 'dbname=\'{0}\' user=\'{1}\' password=\'{2}\' host={3} port={4}'.format(connect.db_name, connect.user, connect.password, connect.host, connect.port)
@@ -83,5 +83,3 @@ class PsqlConnection(DbConnection):
 
     def cursor(self, name=None, withhold=False):
         return LoggingCursor(self.connection.cursor(name=name, withhold=withhold))
-
-
